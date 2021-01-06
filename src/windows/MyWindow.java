@@ -1,8 +1,16 @@
+package windows;
+import files.fileReader;
+
+
+import figures.Shape;
+import service.Generator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.TextHitInfo;
+import java.util.List;
 
 public class MyWindow extends JFrame implements ActionListener {
 
@@ -56,9 +64,7 @@ public class MyWindow extends JFrame implements ActionListener {
         this.setJMenuBar(mb);
 
 /*      JMenuBar menuBar = new JMenuBar();
-
         JMenu fileMenu = new JMenu("File");
-
         menuBar.add(fileMenu);
         this.setJMenuBar(menuBar);*/
     }
@@ -166,6 +172,7 @@ public class MyWindow extends JFrame implements ActionListener {
                     if (res == JFileChooser.APPROVE_OPTION) {
                         System.out.println(fc.getSelectedFile().getAbsolutePath());
                     }
+
                     break;
                 case "Save as":
                     int save = fc.showSaveDialog(this);
@@ -187,15 +194,27 @@ public class MyWindow extends JFrame implements ActionListener {
     }
 
     private void ShowSomeDrawing() {
-        Graphics gr = rightPanel.getGraphics();
-        gr.setColor(Color.RED);
-        gr.drawRect(100, 100, 200, 200);
 
-        gr.setColor(Color.green);
-        gr.fillOval(33, 10, 33, 33);
+        Generator generator = new Generator();
+        List<Shape> shapes = generator.generateFigures(count);
+
+        Graphics gr = rightPanel.getGraphics();
+        for (int i = 0; i < count; i++) {
+            gr.setColor(shapes.get(i).getColor());
+            gr.drawRect(shapes.get(i).getP().getX(), shapes.get(i).getP().getY(), shapes.get(i).getWidth(), shapes.get(i).getHeight());
+            if (shapes.get(i).isFilled()){
+                gr.fillRect(shapes.get(i).getP().getX(), shapes.get(i).getP().getY(), shapes.get(i).getWidth(), shapes.get(i).getHeight());
+            }
+
+
+
+
+        }
+
     }
     private void clearScreen(){
-
+       // shapes.clear();
+        //repaint();
     }
 
 //   @Override
